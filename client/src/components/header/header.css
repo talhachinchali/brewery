@@ -1,0 +1,97 @@
+.header {
+  margin-top: 60px;
+  position: relative;
+}
+
+.headerTitles {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Lora", serif;
+  color: #444;
+}
+
+.headerTitleSm {
+  font-size: 20px;
+  margin-top: 50px;
+}
+
+.headerTitleLg {
+  font-size: 100px;
+}
+
+.headerImg {
+  width: 100%;
+  height: 450px;
+  margin-top: 80px;
+  object-fit: cover;
+  opacity:10;
+}
+
+
+.headerImg:before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  opacity: 0.8; /* adjust the opacity to your liking */
+  z-index: 1; /* make sure the overlay is above the image */
+}
+
+/* animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.headerTitleLg {
+  animation-name: fadeIn;
+  animation-duration: 1.5s;
+  animation-delay: 0.5s;
+  animation-fill-mode: forwards;
+  opacity: 0;
+}
+
+.headerTitleSm {
+  animation-name: fadeIn;
+  animation-duration: 1.5s;
+  animation-delay: 1s;
+  animation-fill-mode: forwards;
+  opacity: 0;
+}
+.headerImg {
+  /* ...existing styles */
+  position: relative; /* make the image position relative to enable animation */
+  left: -100%; /* start the image outside the viewport */
+  animation: slideIn 1s ease-in-out forwards; /* set up the animation */
+}
+
+/* define the animation */
+@keyframes slideIn {
+  from {
+    left: -100%; /* start position */
+  }
+  to {
+    left: 0%; /* end position */
+  }
+}
+
+/* make sure the animation is only triggered once */
+.headerImg.animated {
+  animation: none;
+}
+.headerwave {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  z-index: -1;
+}
