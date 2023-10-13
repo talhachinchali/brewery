@@ -22,6 +22,7 @@ export default function Post({ post }) {
           {new Date(post.createdAt).toDateString()}
         </span>
       </div>
+      <p className="postProfit">Profit : {post.payment_details}</p>
       <p className="postDesc">{post.desc}</p>
     </div>
   );

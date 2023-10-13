@@ -10,7 +10,7 @@ export default function SinglePost() {
   const location = useLocation();
   const path = location.pathname.split("/")[2];
   const [post, setPost] = useState({});
-  const PF = "http://localhost:5000/images/";
+  const PF = "http://localhost:5000/images/"; 
   const { user } = useContext(Context);
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
@@ -57,6 +57,7 @@ export default function SinglePost() {
   return (
     <div className="singlePost">
       <div className="singlePostWrapper">
+        
         {post.photo && (
           <img src={PF + post.photo} alt="" className="singlePostImg" />
         )}
@@ -103,7 +104,10 @@ export default function SinglePost() {
             onChange={(e) => setDesc(e.target.value)}
           />
         ) : (
-          <p className="singlePostDesc">{desc}</p>
+          <>
+          <h1>Total profit : {post.payment_details}</h1>
+          <p className="singlePostDesc">Description : {desc}</p>
+          </>
         )}
         {updateMode && (
           <button className="singlePostButton" onClick={handleUpdate}>
@@ -111,8 +115,7 @@ export default function SinglePost() {
           </button>
         )}
         <div>
-      <h1>Product Details</h1>
-      <p>This is the description of the product.</p>
+     
       <button onClick={handlePayNowClick}  style={{ backgroundColor: "blue", color: "white" }}>
   Pay Now
 </button>

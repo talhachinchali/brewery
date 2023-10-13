@@ -12,7 +12,7 @@ function PaymentInterface() {
   const [cardNumber, setCardNumber] = useState('');
   const [expiry, setExpiry] = useState('');
   const [cvv, setCvv] = useState('');
-  const [amt, setAmt] = useState('');
+  const [amt, setAmt] = useState(0);
   const location = useLocation();
   const [post, setPost] = useState({});
   const [title, setTitle] = useState("");
@@ -40,7 +40,8 @@ function PaymentInterface() {
   };
   console.log(`${cardNumber}`);
   const handleAmtChange = (event) => {
-    setAmt(event.target.value);
+    // Convert the value to a number using Number()
+    setAmt(Number(event.target.value));
   };
 
   const handleExpiryChange = (event) => {
@@ -62,12 +63,16 @@ function PaymentInterface() {
     };
 
     try {
+      console.log("Request URL:", axios.defaults.baseURL + "/auth/payment");
       const res = await axios.post("/auth/payment", newPayment);
+      
       alert('Payment processed successfully!' + post.title);
       console.log(res);
           window.location.replace("/post/" + post._id);
 
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
     
   };
 console.log(user.username);

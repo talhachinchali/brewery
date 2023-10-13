@@ -70,14 +70,23 @@ router.get("/:id", async (req, res) => {
     res.status(500).json(err);
   }
 });
-
-//GET ALL POSTS
+// GET ALL POSTS with Search
 router.get("/", async (req, res) => {
   const username = req.query.user;
   const catName = req.query.cat;
+  const searchTerm = req.query.search; // Added search query parameter
+
   try {
     let posts;
-    if (username) {
+
+    if (searchTerm) {
+      posts = await Post.find({
+        $or: [
+          { title: { $regex: new RegExp(searchTerm, "i") } }, // Search in title
+          { username: { $regex: new RegExp(searchTerm, "i") } } // Search in username
+        ]
+      });
+    } else if (username) {
       posts = await Post.find({ username });
     } else if (catName) {
       posts = await Post.find({
@@ -88,11 +97,13 @@ router.get("/", async (req, res) => {
     } else {
       posts = await Post.find();
     }
+
     res.status(200).json(posts);
   } catch (err) {
     res.status(500).json(err);
   }
 });
+
 
 router.post("/payment", async (req, res) => {
   const newPayment = new Post(req.body);
@@ -103,6 +114,7 @@ router.post("/payment", async (req, res) => {
     res.status(500).json(err);
   }
 });
+
 
 
 module.exports = router;

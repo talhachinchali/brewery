@@ -1,10 +1,11 @@
-import { useContext } from "react";
+import { useContext,useState } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../../context/Context";
 import "./topbar.css";
 
 export default function TopBar() {
   const { user, dispatch } = useContext(Context);
+  const [searchContent,setsearchContent]=useState('');
   const PF = "http://localhost:5000/images/"
 console.log(user);
   const handleLogout = () => {
@@ -25,16 +26,7 @@ console.log(user);
               HOME
             </Link>
           </li>
-          <li className="topListItem">
-            <Link className="link" to="/">
-              ABOUT
-            </Link>
-          </li>
-          <li className="topListItem">
-            <Link className="link" to="/">
-              CONTACT
-            </Link>
-          </li>
+          
           
           {user && user.role === "student" && (
             <li className="topListItem">
@@ -67,6 +59,12 @@ console.log(user);
           </li>
         </ul>
       </div>
+      <div style={{display:"flex",gap:10}}>
+        <input style={{padding:"2px 10px",width:"200px"}} value={searchContent} onChange={(e)=>{setsearchContent(e.target.value)}} placeholder='search title or username' ></input>
+        <Link className="link" to={`/?search=${searchContent}`}>
+  <i className="topSearchIcon fas fa-search" onClick={() => console.log(searchContent)}></i>
+</Link>
+</div>
       <div className="topRight">
         {user ? (
           <Link to="/settings">
@@ -86,7 +84,7 @@ console.log(user);
             </li>
           </ul>
         )}
-        <i className="topSearchIcon fas fa-search"></i>
+      
       </div>
     </div>
   );

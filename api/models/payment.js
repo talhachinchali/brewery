@@ -18,7 +18,7 @@ const UserSchema = new mongoose.Schema(
         
       },
       payment_details: {
-        type: String,
+        type: Number,
         required: true,
         
       },

@@ -19,6 +19,10 @@ const PostSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    payment_details:{
+      type:Number,
+      default:0,
+    },
     categories: {
       type: Array,
       required: false,

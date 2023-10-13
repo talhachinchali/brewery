@@ -5,7 +5,7 @@ const Investor = require("../models/Investor");
 const bcrypt = require("bcrypt");
 const cheerio = require("cheerio");
 const axios = require("axios");
-
+const Post = require("../models/Post");
 //REGISTER
 router.post("/register", async (req, res) => {
   try {
@@ -28,7 +28,7 @@ router.post("/register", async (req, res) => {
   }
 
 });
-
+/*
 router.post("/payment", async (req, res) => {
   
   try {
@@ -50,6 +50,35 @@ router.post("/payment", async (req, res) => {
   }
 
 });
+*/
+router.post("/payment", async (req, res) => {
+  try {
+    const postId = req.body.post_id;
+    const paymentDetails = parseFloat(req.body.payment_details);  // Convert to float to handle decimals
+
+    // Find the post by post_id
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found for the given post ID.' });
+    }
+
+    // Update the payment_details of the post
+    post.payment_details = parseFloat(post.payment_details) + paymentDetails;  // Ensure both are treated as numbers
+    await post.save();
+
+    res.status(200).json({ message: 'Payment details updated successfully.' });
+  } catch (err) {
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+});
+
+
+
+
+
+
+
 
 router.get("/govt", async (req, res) => {
   try {
@@ -370,21 +399,24 @@ console.log(fullHtml);
 */
 
 
-
-//LOGIN
 router.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({ username: req.body.username });
-    !user && res.status(400).json("Wrong credentials!");
+    if (!user) {
+      return res.status(400).json("Wrong credentials!");
+    }
 
     const validated = await bcrypt.compare(req.body.password, user.password);
-    !validated && res.status(400).json("Wrong credentials!");
+    if (!validated) {
+      return res.status(400).json("Wrong credentials!");
+    }
 
     const { password, ...others } = user._doc;
-    res.status(200).json(others);
+    return res.status(200).json(others);
   } catch (err) {
-    res.status(500).json(err);
+    return res.status(500).json(err.message);
   }
 });
+
 
 module.exports = router;
