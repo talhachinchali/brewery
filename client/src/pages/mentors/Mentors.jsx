@@ -6,7 +6,7 @@ function Mentors() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await axios.get("/auth/mentors");
+      const response = await axios.get("https://startup-budding-backend.onrender.com/api/auth/mentors");
       setSchemes(response.data);
     }
 

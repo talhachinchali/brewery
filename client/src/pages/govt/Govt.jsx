@@ -6,7 +6,7 @@ function Govt() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await axios.get("/auth/govt");
+      const response = await axios.get("https://startup-budding-backend.onrender.com/api/auth/govt");
       setSchemes(response.data);
     }
 
