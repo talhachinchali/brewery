@@ -75,5 +75,3 @@ console.log(user);
     </div>
   );
 }
-//talhachinchali29
-//jO9iaoBo36yr2Mje
