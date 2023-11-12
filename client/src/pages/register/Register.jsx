@@ -8,18 +8,18 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
-  const [role, setRole] = useState("");
+  
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(false);
     try {
-      const res = await axios.post("https://startup-budding-backend.onrender.com/api/auth/register", {
+      const res = await axios.post("http://localhost:5000/api/auth/register", {
         username,
         email,
         password,
-        role,
+        
       });
       res.data && window.location.replace("/login");
     } catch (err) {
@@ -45,21 +45,7 @@ export default function Register() {
           onChange={(e) => setEmail(e.target.value)}
         />
 
-<label>Role</label>
-<div>
-  <label>
-    <input type="radio" name="role" value="investor" onChange={(e) => setRole(e.target.value)} />
-    Investor
-  </label>
-  <label>
-    <input type="radio" name="role" value="student" onChange={(e) => setRole(e.target.value)} />
-    Student
-  </label>
-  <label>
-    <input type="radio" name="role" value="mentor" onChange={(e) => setRole(e.target.value)} />
-    Mentor
-  </label>
-</div>
+
 
 
         <label>Password</label>

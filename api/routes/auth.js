@@ -10,13 +10,13 @@ const Post = require("../models/Post");
 router.post("/register", async (req, res) => {
   try {
     const salt = await bcrypt.genSalt(10);
-    const role = req.body.role;
+    
     const hashedPass = await bcrypt.hash(req.body.password, salt);
     const newUser = new User({
       username: req.body.username,
       email: req.body.email,
       password: hashedPass,
-      role:role,
+      
     });
     const user = await newUser.save();
 
@@ -77,96 +77,28 @@ router.post("/payment", async (req, res) => {
 
 
 
-
-
-
+// Define a route for fetching JSON data of breweries
 router.get("/govt", async (req, res) => {
   try {
-    const { data } = await axios.get(`https://www.startupindia.gov.in/content/sih/en/ams-application/application-listing.html`);
-    const $ = cheerio.load(data);
-
-    const cards = $(".scheme-card-outer").map((i, element) => {
-      const header = $(element).find(".resource-heading").text();
-      const link = $(element).find("a").attr("href");
-      const image = `https://www.startupindia.gov.in${$(element).find("img").attr("src")}`;
-      // console.log(`https://www.startupindia.gov.in${image}`);
-      return `
-        <div class="card">
-          <img src="${image}">
-          <h3>${header}</h3>
-          <a href="${link}">View Details</a>
-        </div>
-      `;
-    }).get().join("");
-
-    const html = `
-    <html>
-        <head>
-          <style>
-          body {
-            background-color: white;
-            font-family: Arial, sans-serif;
-            color: #333;
-          }
-          
-          .card {
-            display: inline-block;
-            margin: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            width: 300px;
-            transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3)
-          }
-          
-          .card:hover {
-            transform: translateY(-5px);
-            background-image: linear-gradient(153deg, #F8C332 0%, #FB8332 95%) /* change the background color on hover */
-            
-          }
-          
-          .card h3 {
-            font-size: 24px;
-            margin: 0 0 10px;
-          }
-          
-          .card img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-          }
-          
-          .card a {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 10px;
-            background-color: #007bff;
-            color: #fff;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background-color 0.2s ease-in-out;
-          }
-          
-          .card a:hover {
-            background-color: #0062cc;
-          }
-          
-          </style>
-        </head>
-        <body>
-          ${cards}
-        </body>
-      </html>
-    `;
-
-    res.send(html);
+    const { data } = await axios.get(`https://api.openbrewerydb.org/v1/breweries?per_page=16`);
+    res.json(data);
   } catch (err) {
-    console.log({ error: err });
+    console.error({ error: err });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
+// Define a route for fetching details of a single brewery
+router.get("/govt/:id", async (req, res) => {
+  try {
+    const breweryId = req.params.id;
+    const { data } = await axios.get(`https://api.openbrewerydb.org/v1/breweries/${breweryId}`);
+    res.json(data);
+  } catch (err) {
+    console.error({ error: err });
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 router.get("/webinars", async (req, res) => {
   try {

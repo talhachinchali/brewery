@@ -6,7 +6,7 @@ function Webinars() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await axios.get("https://startup-budding-backend.onrender.com/api/auth/webinars");
+      const response = await axios.get("http://localhost:5000/api/auth/webinars");
       setSchemes(response.data);
     }
 

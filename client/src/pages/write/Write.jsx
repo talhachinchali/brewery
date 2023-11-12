@@ -23,12 +23,12 @@ export default function Write() {
       data.append("file", file);
       newPost.photo = filename;
       try {
-        await axios.post("https://startup-budding-backend.onrender.com/api/upload", data);
+        await axios.post("http://localhost:5000/api/upload", data);
       } catch (err) {}
     }
     try {
-      const res = await axios.post("https://startup-budding-backend.onrender.com/api/posts", newPost);
-      window.location.replace("https://startup-budding-backend.onrender.com/api/post/" + res.data._id);
+      const res = await axios.post("http://localhost:5000/api/posts", newPost);
+      window.location.replace("http://localhost:5000/api/post/" + res.data._id);
     } catch (err) {}
   };
   return (

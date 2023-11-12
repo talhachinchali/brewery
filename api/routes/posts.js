@@ -2,19 +2,72 @@ const router = require("express").Router();
 const User = require("../models/User");
 const Post = require("../models/Post");
 const Payment = require("../models/payment");
+// Helper function to calculate overall rating
+const calculateOverallRating = (ratings) => {
+  if (ratings.length === 0) {
+    return 0; // No ratings, return 0
+  }
 
-//CREATE POST
+  // Calculate the sum of all ratings
+  const sumOfRatings = ratings.reduce((total, rating) => total + rating.rating, 0);
+
+  // Calculate the average rating
+  const averageRating = sumOfRatings / ratings.length;
+
+  // Round the average rating to one decimal place
+  const roundedAverage = Math.round(averageRating * 10) / 10;
+
+  return roundedAverage;
+};
+
 router.post("/", async (req, res) => {
-  const newPost = new Post(req.body);
+  const { username, title, desc, payment_details, link, country,city,state,phone } = req.body;
+
   try {
-    const savedPost = await newPost.save();
-    res.status(200).json(savedPost);
+    // Find the post by title
+    const post = await Post.findOne({ title });
+
+    if (!post) {
+      // If the post doesn't exist, create a new one
+      const newPost = new Post({ title, desc, payment_details, link, country,city,state,phone });
+      newPost.ratings.push({
+        username,
+        rating: payment_details,
+        description: desc,
+      });
+      await newPost.save();
+
+      // Calculate overall rating and update payment_details
+      const overallRating = calculateOverallRating(newPost.ratings);
+      newPost.payment_details = overallRating;
+
+      await newPost.save();
+
+      return res.status(200).json(newPost);
+    }
+
+    // If the post exists, add the new review to the ratings array
+    post.ratings.push({
+      username,
+      rating: payment_details,
+      description: desc,
+    });
+
+    // Save the updated post document
+    await post.save();
+
+    // Calculate overall rating and update payment_details
+    const overallRating = calculateOverallRating(post.ratings);
+    post.payment_details = overallRating;
+
+    await post.save();
+
+    res.status(200).json(post);
   } catch (err) {
-    res.status(500).json(err);
+    console.error("Error saving review:", err);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
-
 
 //UPDATE POST
 router.put("/:id", async (req, res) => {

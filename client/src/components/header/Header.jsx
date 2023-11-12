@@ -30,8 +30,8 @@ export default function Header() {
   return (
     <div className="header">
       <div className={`headerTitles ${isHeaderVisible ? "visible" : ""}`}>
-        <span className="headerTitleSm">Enterpreneurship</span>
-        <span className="headerTitleLg">Ideas</span>
+        <span className="headerTitleSm">Breweries</span>
+       
       </div>
       <img
         className={`headerImg ${isHeaderVisible ? "slide" : ""}`}

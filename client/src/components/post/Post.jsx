@@ -2,28 +2,24 @@ import "./post.css";
 import { Link } from "react-router-dom";
 
 export default function Post({ post }) {
-  const PF = "https://startup-budding-backend.onrender.com/images/";
+  const PF = "http://localhost:5000/images/";
   return (
     <div className="post">
-       <Link to={`/post/${post._id}`} className="link">
-      {post.photo && <img className="postImg" src={PF + post.photo} alt="" />}
-      </Link>
+     
       <div className="postInfo">
-        <div className="postCats">
-          {post.categories.map((c) => (
-            <span className="postCat">{c.name}</span>
-          ))}
-        </div>
+        
         <Link to={`/post/${post._id}`} className="link">
           <span className="postTitle">{post.title}</span>
         </Link>
         <hr />
-        <span className="postDate">
-          {new Date(post.createdAt).toDateString()}
-        </span>
+        
       </div>
-      <p className="postProfit">Profit : {post.payment_details}</p>
-      <p className="postDesc">{post.desc}</p>
+      <p className="postDate">country : {post.country}</p>
+      <p className="postDate">city : {post.city}</p>
+      <p className="postDate">state : {post.state}</p>
+      <p className="postDate">phone : {post.phone}</p>
+      <p className="postProfit">Rating : {post.payment_details}</p>
+     
     </div>
   );
 }

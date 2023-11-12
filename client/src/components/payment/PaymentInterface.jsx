@@ -25,7 +25,7 @@ function PaymentInterface() {
 
   useEffect(() => {
     const getPost = async () => {
-      const res = await axios.get("https://startup-budding-backend.onrender.com/api/posts/" + path);
+      const res = await axios.get("http://localhost:5000/api/posts/" + path);
       setPost(res.data);
       setTitle(res.data.title);
       setDesc(res.data.desc);
@@ -64,7 +64,7 @@ function PaymentInterface() {
 
     try {
       console.log("Request URL:", axios.defaults.baseURL + "/auth/payment");
-      const res = await axios.post("https://startup-budding-backend.onrender.com/api/auth/payment", newPayment);
+      const res = await axios.post("http://localhost:5000/api/auth/payment", newPayment);
       
       alert('Payment processed successfully!' + post.title);
       console.log(res);
